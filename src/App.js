@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import { Button, Card, Form } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -53,12 +53,9 @@ function FormTodo({ addTodo }) {
 }
 
 function App() {
-  const [todos, setTodos] = React.useState([
-    {
-      text: "This is a sampe todo",
-      isDone: false,
-    },
-  ]);
+  const [todos, setTodos] = React.useState(
+    JSON.parse(localStorage.getItem("list") || "[]")
+  );
 
   const addTodo = (text) => {
     const newTodos = [...todos, { text }];
@@ -76,6 +73,11 @@ function App() {
     newTodos.splice(index, 1);
     setTodos(newTodos);
   };
+
+  //add data to local
+  useEffect(() => {
+    localStorage.setItem("list", JSON.stringify(todos));
+  }, [todos]);
 
   return (
     <div className="app">
